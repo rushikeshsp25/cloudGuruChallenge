@@ -6,7 +6,7 @@ def getSNSClient():
         "sns",
         aws_access_key_id = Secret.aws_access_key_id,
         aws_secret_access_key = Secret.aws_secret_access_key,
-        region_name="us-east-2"
+        region_name = Secret.aws_region
     )
     return client
 
@@ -17,12 +17,10 @@ class SNSNotification:
         if SNSNotification.__instance == None:
             SNSNotification()
         return SNSNotification.__instance
-    def notify(self):
-        print(self.sns_client)
-        print("Notifying")
+    def notify(self,no_rows_added):
         self.sns_client.publish(
-            PhoneNumber="+917775910607",
-            Message="Hello World!"
+            TargetArn = Secret.topic_arn,
+            Message = str(no_rows_added)+" rows are added!",
         )
     def __init__(self):
         if SNSNotification.__instance != None:
@@ -32,10 +30,5 @@ class SNSNotification:
             SNSNotification.__instance = self
 
 
-# Send your sms message.
-# client.publish(
-#     PhoneNumber="+12223334444",
-#     Message="Hello World!"
-# )
-
-SNSNotification.getInstance().notify()
+if __name__=="__main__":
+    SNSNotification.getInstance().notify(10)
