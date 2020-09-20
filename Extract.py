@@ -3,13 +3,14 @@ import pandas
 def extract_csv(csv_url, date_columns=[]):
     """
         Parameters:
-        csv_url (string): url of the csv file
+        csv_url (string): url of the csv file,
         date_columns (list): list of the column names containing date type values
 
         Returns:
         pandas dataframe of the csv file
     """
     try:
+        #Validate Arguments
         if not isinstance(csv_url, str) or not isinstance(date_columns, list):
             raise Exception("Invalid Arguments")
         return pandas.read_csv(csv_url,parse_dates=date_columns)
